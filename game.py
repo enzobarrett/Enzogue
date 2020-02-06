@@ -62,8 +62,10 @@ class Game:
         if self.c == 3:
             self.exit()
         # left 260
-        if(self.posx < self.currentRoom.w/2 && self.posy < self.currentRoom.h/2):
-            elif self.c == 260:
+        self.win.addstr(1,0, str(self.posx))
+        self.win.addstr(2,0, str(self.currentRoom.w/2))
+        if(self.posx < (self.currentRoom.w/2+self.midpointx) and self.posy < (self.currentRoom.h/2+self.midpointy)):
+            if self.c == 260:
                 self.posx-=1
             # right 261
             elif self.c == 261:
@@ -126,8 +128,8 @@ game = Game()
 def main():
     # Game loop
     while(True):
-        game.recvChar()
         game.display()
+        game.recvChar()
 
 
 if __name__ == '__main__':
