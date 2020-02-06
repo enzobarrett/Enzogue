@@ -17,6 +17,8 @@ class Game:
 
     def initCurses(self):
         stdscr = curses.initscr()
+        oheight,owidth = stdscr.getmaxyx()
+
         curses.noecho()
         curses.raw()
         begin_x = 0; begin_y = 0
@@ -24,6 +26,8 @@ class Game:
         self.win = curses.newwin(height, width, begin_y, begin_x)
         self.win.keypad(True)
         self.win.nodelay(True)
+        if oheight < 36 or owidth < 116:
+            self.exit("window too small")
 
     def initStats(self):
         self.level = 1
@@ -60,7 +64,7 @@ class Game:
         # left 260 ---  right 261 --- up 259 --- down 258
         self.c = self.win.getch()
         if self.c == 3:
-            self.exit()
+            self.exit("")
         # left 260
         self.win.addstr(1,0, str(self.posx))
         self.win.addstr(2,0, str(self.currentRoom.w/2))
@@ -114,12 +118,12 @@ class Game:
             self.win.addstr(self.midpointy + int(self.currentRoom.h/2) - 1, self.midpointx - int(self.currentRoom.w/2), chars)
 
 
-    def exit(self):
+    def exit(self,msg):
         curses.nocbreak()
         self.win.keypad(False)
         curses.echo()
         curses.endwin()
-        print(self.currentRoom.halls)
+        print(msg)
         sys.exit()
 
 
